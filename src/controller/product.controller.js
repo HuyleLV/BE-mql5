@@ -14,6 +14,13 @@ module.exports = {
             res.send(result);
         });
     },
+
+    getByCategoryChild:(req, res) => {
+        const categoryChild_id = req.params.categoryChild_id;
+        Product.getByCategoryChild(categoryChild_id, (result) => {
+            res.send(result);
+        });
+    },
     
     // createCategory:(req, res) => {
     //     const category_name = req.body.category_name;

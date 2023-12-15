@@ -15,12 +15,16 @@ module.exports = {
         });
     },
     
-    // createCategory:(req, res) => {
-    //     const category_name = req.body.category_name;
-    //     Category.createCategory(category_name, (result) => {
-    //         res.send(result);
-    //     });
-    // },
+    create:(req, res) => {
+        const category_name = req.body.category_name;
+        const category_description = req.body.category_description;
+        const category_link = req.body.category_link;
+        const create_at = req.body.create_at;
+        const create_by = req.body.create_by;
+        Category.create(category_name, category_description, category_link, create_at, create_by, (result) => {
+            res.send(result);
+        });
+    },
 
     // updateCategory:(req, res) => {
     //     const category_id = req.params.category_id;

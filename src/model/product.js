@@ -34,4 +34,14 @@ Product.getById = (product_id, callback) => {
   });
 }
 
+Product.getByCategoryChild = (categoryChild_id, callback) => {
+  const sqlString = `SELECT * FROM product WHERE categoryChild_id=? ORDER BY product_id DESC`;
+  db.query(sqlString, categoryChild_id, (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+      callback(result);
+  });
+}
+
 module.exports = Product;

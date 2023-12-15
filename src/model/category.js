@@ -9,7 +9,9 @@ const Category = (category) => {
 };
 
 Category.getAll = (callback) => {
-    const sqlString = `SELECT * FROM category ORDER BY category_id DESC`;
+    const sqlString = `SELECT * FROM category
+                        JOIN categorychild ON category.category_id = categorychild.category_id
+                        ORDER BY category.category_id DESC`;
     db.query(sqlString, (err, result) => {
       if (err) {
         return callback(err);
@@ -21,6 +23,17 @@ Category.getAll = (callback) => {
 Category.getById = (category_id, callback) => {
   const sqlString = `SELECT * FROM category WHERE category_id =?`;
   db.query(sqlString, category_id, (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+      callback(result);
+  });
+}
+
+Category.create = (category_name, category_description, category_link, create_at, create_by, callback) => {
+  const sqlString = `INSERT INTO category(category_name, category_description, category_link, create_at, create_by) 
+                      VALUES (?,?,?,?,?)`;
+  db.query(sqlString, [category_name, category_description, category_link, create_at, create_by], (err, result) => {
     if (err) {
       return callback(err);
     }
