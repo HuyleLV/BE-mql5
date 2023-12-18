@@ -3,7 +3,7 @@ const Category = require("../model/category");
 module.exports = {
 
     getAll:(req, res) => {
-        Category.getAll((result) => {
+        Category.getAll((result) => {  
             res.send(result);
         });
     },
