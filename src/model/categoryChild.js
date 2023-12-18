@@ -29,4 +29,35 @@ categoryChild.getById = (categoryChild_id, callback) => {
   });
 }
 
+categoryChild.create = (categoryChild_name, categoryChild_description, category_id, create_at, create_by, callback) => {
+  const sqlString = `INSERT INTO categorychild(categoryChild_name, categoryChild_description, category_id, create_at, create_by) 
+                      VALUES (?,?,?,?,?)`;
+  db.query(sqlString, [categoryChild_name, categoryChild_description, category_id, create_at, create_by], (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+      callback(result);
+  });
+}
+
+categoryChild.update = (categoryChild_id, categoryChild_name, categoryChild_description, category_id, create_at, create_by, callback) => {
+  const sqlString = `UPDATE categorychild SET categoryChild_name=?, categoryChild_description=?, category_id=?, create_at=?, create_by=? WHERE categoryChild_id=?`;
+  db.query(sqlString, [categoryChild_name, categoryChild_description, category_id, create_at, create_by, categoryChild_id], (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+      callback(result);
+  });
+}
+
+categoryChild.delete = (categoryChild_id, callback) => {
+  const sqlString = `DELETE FROM categorychild WHERE categoryChild_id=?`;
+  db.query(sqlString, categoryChild_id, (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+      callback(result);
+  });
+}
+
 module.exports = categoryChild;
