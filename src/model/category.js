@@ -73,4 +73,24 @@ Category.create = (category_name, category_description, category_link, create_at
   });
 }
 
+Category.update = (category_id, category_name, category_description, category_link, create_at, create_by, callback) => {
+  const sqlString = `UPDATE category SET category_name=?, category_description=?, category_link=?, create_at=?, create_by=? WHERE category_id=?`;
+  db.query(sqlString, [category_name, category_description, category_link, create_at, create_by, category_id], (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+      callback(result);
+  });
+}
+
+Category.delete = (category_id, callback) => {
+  const sqlString = `DELETE FROM category WHERE category_id=?`;
+  db.query(sqlString, category_id, (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+      callback(result);
+  });
+}
+
 module.exports = Category;
