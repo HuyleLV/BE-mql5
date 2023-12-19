@@ -42,10 +42,22 @@ module.exports = function (router) {
                     if (err) {
                         return res.send(err);
                     }
-                    res.send(result);
+                    const sqlUser = `SELECT * FROM user WHERE email=?`;
+                    db.query(sqlUser, email, (err, result) => {
+                        if (err) {
+                            return res.send(err);
+                        }
+                        res.send(result);
+                    });
                 });
             }else{
-                res.send("Email already exists!");
+                const sqlUser = `SELECT * FROM user WHERE email=?`;
+                db.query(sqlUser, email, (err, result) => {
+                    if (err) {
+                        return res.send(err);
+                    }
+                    res.send(result);
+                });
             }
             
         });
