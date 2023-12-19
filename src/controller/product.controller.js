@@ -22,12 +22,12 @@ module.exports = {
         });
     },
     
-    // createCategory:(req, res) => {
-    //     const category_name = req.body.category_name;
-    //     Category.createCategory(category_name, (result) => {
-    //         res.send(result);
-    //     });
-    // },
+    create:(req, res) => {
+        console.log(req.file);
+        // Category.createCategory(category_name, (result) => {
+        //     res.send(result);
+        // });
+    },
 
     // updateCategory:(req, res) => {
     //     const category_id = req.params.category_id;
