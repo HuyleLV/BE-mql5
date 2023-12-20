@@ -44,4 +44,104 @@ Product.getByCategoryChild = (categoryChild_id, callback) => {
   });
 }
 
+Product.create = (
+  product_name, 
+  product_slug, 
+  product_description, 
+  product_price, 
+  product_link, 
+  product_image, 
+  categoryChild_id, 
+  product_version, 
+  product_activations, 
+  create_at, 
+  create_by, 
+  callback) => {
+  const sqlString = `INSERT INTO product(
+    product_name, 
+    product_slug, 
+    product_description, 
+    product_price, 
+    product_link, 
+    product_image, 
+    categoryChild_id, 
+    product_version, 
+    product_activations, 
+    create_at, 
+    create_by) VALUES (?,?,?,?,?,?,?,?,?,?,?)`;
+  db.query(sqlString, [
+    product_name, 
+    product_slug, 
+    product_description, 
+    product_price, 
+    product_link, 
+    product_image, 
+    categoryChild_id, 
+    product_version, 
+    product_activations, 
+    create_at, 
+    create_by,], (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+      callback(result);
+  });
+}
+
+Product.update = (
+  product_id,
+  product_name, 
+  product_slug, 
+  product_description, 
+  product_price, 
+  product_link, 
+  product_image, 
+  categoryChild_id, 
+  product_version, 
+  product_activations, 
+  create_at, 
+  create_by, 
+  callback) => {
+  const sqlString = `UPDATE product SET 
+  product_name=?, 
+  product_slug=?, 
+  product_description=?,
+  product_price=?, 
+  product_link=?,
+  product_image=?, 
+  categoryChild_id=?, 
+  product_version=?, 
+  product_activations=?, 
+  create_at=?, 
+  create_by=? WHERE product_id=?`;
+  db.query(sqlString, [
+    product_name, 
+    product_slug, 
+    product_description, 
+    product_price, 
+    product_link, 
+    product_image, 
+    categoryChild_id, 
+    product_version, 
+    product_activations, 
+    create_at, 
+    create_by,
+    product_id], (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+      callback(result);
+  });
+}
+
+Product.delete = (product_id, callback) => {
+  const sqlString = `DELETE FROM product WHERE product_id = ?`;
+  db.query(sqlString, product_id, (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+      callback(result);
+  });
+}
+
 module.exports = Product;

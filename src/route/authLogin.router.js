@@ -35,4 +35,9 @@ module.exports = function (router) {
         return res.redirect(`${process.env.CLIENT_URL}`);
     });
 
+    router.get("/auth/logout", (req, res) => {
+      res.clearCookie('user');
+      return res.redirect(`${process.env.CLIENT_URL}`);
+  });
+
 };

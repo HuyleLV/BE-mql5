@@ -25,24 +25,73 @@ module.exports = {
   create: (req, res) => {
     const { file } = req;
 
-    if (!file) return res.status(400).json({ message: "File not fund!" });
-    return res
-      .status(201)
-      .json({ message: "Upload successful!", url: `/${file?.path}` });
+    const product_name = req.body.product_name;
+    const product_slug = req.body.product_slug;
+    const product_description = req.body.product_description;
+    const product_price = req.body.product_price;
+    const product_link = `/uploads/${file?.filename}`;
+    const product_image = req.body.product_image;
+    const categoryChild_id = req.body.categoryChild_id;
+    const product_version = req.body.product_version;
+    const product_activations = req.body.product_activations;
+    const create_at = formatDate(new Date());
+    const create_by = req.body.create_by;
+
+    Product.create(
+      product_name, 
+      product_slug, 
+      product_description, 
+      product_price, 
+      product_link, 
+      product_image, 
+      categoryChild_id, 
+      product_version, 
+      product_activations, 
+      create_at, 
+      create_by,
+      (result) => {
+        res.send(result);
+    });
   },
 
-  // updateCategory:(req, res) => {
-  //     const category_id = req.params.category_id;
-  //     const category_name = req.body.category_name;
-  //     Category.updateCategory(category_id, category_name, (result) => {
-  //         res.send(result);
-  //     });
-  // },
+  update: (req, res) => {
+    const { file } = req;
+    const product_id = req.params.product_id;
 
-  // deleteCategoryById:(req, res) => {
-  //     const category_id = req.params.category_id;
-  //     Category.deleteCategoryById(category_id, (result) => {
-  //         res.send(result);
-  //     });
-  // },
+    const product_name = req.body.product_name;
+    const product_slug = req.body.product_slug;
+    const product_description = req.body.product_description;
+    const product_price = req.body.product_price;
+    const product_link = `/uploads/${file?.filename}`;
+    const product_image = req.body.product_image;
+    const categoryChild_id = req.body.categoryChild_id;
+    const product_version = req.body.product_version;
+    const product_activations = req.body.product_activations;
+    const create_at = formatDate(new Date());
+    const create_by = req.body.create_by;
+
+    Product.update(
+      product_id,
+      product_name, 
+      product_slug, 
+      product_description, 
+      product_price, 
+      product_link, 
+      product_image, 
+      categoryChild_id, 
+      product_version, 
+      product_activations, 
+      create_at, 
+      create_by,
+      (result) => {
+        res.send(result);
+    });
+  },
+
+  delete:(req, res) => {
+      const product_id = req.params.product_id;
+      Product.delete(product_id, (result) => {
+          res.send(result);
+      });
+  },
 };
