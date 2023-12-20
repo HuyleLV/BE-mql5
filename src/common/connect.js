@@ -7,4 +7,9 @@ const db = mysql.createConnection({
   database: process.env.DATABASE,
 });
 
+db.connect(function (err) {
+  if (err) throw err.stack;
+  console.log("ket noi thanh cong");
+});
+
 module.exports = db;
