@@ -4,7 +4,14 @@ const multer = require("multer");
 module.exports = function (router) {
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, `${process.env.DIR_UPLOADS}`);
+      console.log(file.mimetype);
+      if (file.mimetype.includes("image")) {
+        cb(null, `${process.env.DIR_UPLOADS}/image`);
+      }else if (file.mimetype.includes("application")) {
+        cb(null, `${process.env.DIR_UPLOADS}/application`);
+      }else {
+        cb(null, `${process.env.DIR_UPLOADS}/other`);
+      }
     },
     filename: (req, file, cb) => {
       const newFileName = `${Date.now()}_${file.originalname}`;
