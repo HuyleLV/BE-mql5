@@ -31,6 +31,7 @@ require("./src/route/category.router")(app);
 require("./src/route/categoryChild.router")(app);
 require("./src/route/product.router")(app);
 require("./src/route/authLogin.router")(app);
+require("./src/route/upload.router")(app);
 
 app.listen(port);
 

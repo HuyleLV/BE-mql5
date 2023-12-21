@@ -1,3 +1,4 @@
+const formatDate = require("../common/formatDate");
 const Product = require("../model/product");
 const fs = require("fs-extra");
 
@@ -23,13 +24,12 @@ module.exports = {
   },
 
   create: (req, res) => {
-    const { file } = req;
-
+    console.log(req.body);
     const product_name = req.body.product_name;
     const product_slug = req.body.product_slug;
     const product_description = req.body.product_description;
     const product_price = req.body.product_price;
-    const product_link = `/uploads/${file?.filename}`;
+    const product_link = req.body.product_link;
     const product_image = req.body.product_image;
     const categoryChild_id = req.body.categoryChild_id;
     const product_version = req.body.product_version;
@@ -55,14 +55,13 @@ module.exports = {
   },
 
   update: (req, res) => {
-    const { file } = req;
     const product_id = req.params.product_id;
 
     const product_name = req.body.product_name;
     const product_slug = req.body.product_slug;
     const product_description = req.body.product_description;
     const product_price = req.body.product_price;
-    const product_link = `/uploads/${file?.filename}`;
+    const product_link = req.body.product_link;
     const product_image = req.body.product_image;
     const categoryChild_id = req.body.categoryChild_id;
     const product_version = req.body.product_version;
