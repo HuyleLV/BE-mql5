@@ -4,6 +4,7 @@ const Category = (category) => {
     this.category_id = category.category_id;
     this.category_name = category.category_name;
     this.category_description = category.category_description;
+    this.category_link = category.category_link;
     this.create_at = category.create_at;
     this.create_by = category.create_by;
 };
@@ -73,9 +74,9 @@ Category.create = (category_name, category_description, category_link, create_at
   });
 }
 
-Category.update = (category_id, category_name, category_description, category_link, create_at, create_by, callback) => {
-  const sqlString = `UPDATE category SET category_name=?, category_description=?, category_link=?, create_at=?, create_by=? WHERE category_id=?`;
-  db.query(sqlString, [category_name, category_description, category_link, create_at, create_by, category_id], (err, result) => {
+Category.update = (category_id, category_name, category_description, category_link, create_by, callback) => {
+  const sqlString = `UPDATE category SET category_name=?, category_description=?, category_link=?, create_by=? WHERE category_id=?`;
+  db.query(sqlString, [category_name, category_description, category_link, create_by, category_id], (err, result) => {
     if (err) {
       return callback(err);
     }

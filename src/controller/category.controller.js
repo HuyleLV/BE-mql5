@@ -1,4 +1,5 @@
 const Category = require("../model/category");
+const formatDate = require("../common/formatDate");
 
 module.exports = {
 
@@ -31,9 +32,8 @@ module.exports = {
         const category_name = req.body.category_name;
         const category_description = req.body.category_description;
         const category_link = req.body.category_link;
-        const create_at = formatDate(new Date());
         const create_by = req.body.create_by;
-        Category.update(category_id, category_name, category_description, category_link, create_at, create_by, (result) => {
+        Category.update(category_id, category_name, category_description, category_link, create_by, (result) => {
             res.send(result);
         });
     },
