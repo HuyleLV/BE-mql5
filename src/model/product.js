@@ -98,7 +98,6 @@ Product.update = (
   product_image, 
   categoryChild_id, 
   product_version, 
-  product_activations, 
   create_at, 
   create_by, 
   callback) => {
@@ -111,7 +110,6 @@ Product.update = (
   product_image=?, 
   categoryChild_id=?, 
   product_version=?, 
-  product_activations=?, 
   create_at=?, 
   create_by=? WHERE product_id=?`;
   db.query(sqlString, [
@@ -123,7 +121,6 @@ Product.update = (
     product_image, 
     categoryChild_id, 
     product_version, 
-    product_activations, 
     create_at, 
     create_by,
     product_id], (err, result) => {

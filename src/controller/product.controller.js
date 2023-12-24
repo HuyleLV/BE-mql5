@@ -33,7 +33,7 @@ module.exports = {
     const product_image = req.body.product_image;
     const categoryChild_id = req.body.categoryChild_id;
     const product_version = req.body.product_version;
-    const product_activations = req.body.product_activations;
+    const product_activations = 0;
     const create_at = formatDate(new Date());
     const create_by = req.body.create_by;
 
@@ -65,7 +65,6 @@ module.exports = {
     const product_image = req.body.product_image;
     const categoryChild_id = req.body.categoryChild_id;
     const product_version = req.body.product_version;
-    const product_activations = req.body.product_activations;
     const create_at = formatDate(new Date());
     const create_by = req.body.create_by;
 
@@ -79,7 +78,6 @@ module.exports = {
       product_image, 
       categoryChild_id, 
       product_version, 
-      product_activations, 
       create_at, 
       create_by,
       (result) => {
