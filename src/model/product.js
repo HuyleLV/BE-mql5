@@ -25,7 +25,9 @@ Product.getAll = (callback) => {
 }
 
 Product.getById = (product_id, callback) => {
-  const sqlString = `SELECT * FROM product WHERE product_id =?`;
+  const sqlString = `SELECT * FROM product 
+  INNER JOIN categorychild ON categorychild.categoryChild_id = product.categoryChild_id
+  WHERE product.product_id = ?`;
   db.query(sqlString, product_id, (err, result) => {
     if (err) {
       return callback(err);
