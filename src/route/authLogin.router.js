@@ -19,11 +19,9 @@ module.exports = function (router) {
           const { displayName, email } = req.user;
           const photos = req.user.photos[0].value;
           const create_at = formatDate(new Date());
-
           let user = await findByEmail(email);
           const newUser = { displayName, email, photos, create_at };
-          if (!user) user = await create(newUser);
-
+          if (user && user?.length === 0) user = await create(newUser);
           const data = await getUserbyEmail(email);
           res.cookie('user', data);
           return res.redirect(`${process.env.CLIENT_URL}`);
