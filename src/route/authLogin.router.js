@@ -1,6 +1,6 @@
 const formatDate = require('../common/formatDate');
 const db = require("../common/connect");
-const { findByEmail, create } = require('../model/user');
+const { findByEmail, create, getUserbyEmail } = require('../model/user');
 
 module.exports = function (router) {
     const passport = require('passport');
@@ -23,7 +23,9 @@ module.exports = function (router) {
           let user = await findByEmail(email);
           const newUser = { displayName, email, photos, create_at };
           if (!user) user = await create(newUser);
-          res.cookie('user', newUser);
+
+          const data = await getUserbyEmail(email);
+          res.cookie('user', data);
           return res.redirect(`${process.env.CLIENT_URL}`);
         } catch (e) {
           res.status(500).json({ message: 'error server!'})
