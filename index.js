@@ -34,6 +34,7 @@ require("./src/route/authLogin.router")(app);
 require("./src/route/upload.router")(app);
 require("./src/route/comment.router")(app);
 require("./src/route/user.router")(app);
+require("./src/route/transfer.router")(app);
 
 
 app.listen(port);
