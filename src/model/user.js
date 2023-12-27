@@ -1,7 +1,7 @@
 const Conn = require("../common/connDefauld");
 class User {
   findAll = () => {
-    const sql = "SELECT * FROM account";
+    const sql = "SELECT * FROM user ORDER BY user_id DESC";
     return Conn.GetList(sql, []);
   };
   findByEmail = (email) => {
@@ -13,22 +13,27 @@ class User {
     const value = [user.displayName, user.email, user.photos, 1, user.create_at];
     return Conn.Excute(sql, value);
   };
+  createByAdmin = (user) => {
+    const sql = `INSERT INTO user (displayName, email, password, photos, phone, role, create_at) values (?, ?, ?, ?, ?, ?, ?)`;
+    const value = [user.displayName, user.email, user.password, user.photos, user.phone, user.role, user.create_at];
+    return Conn.Excute(sql, value);
+  };
   getUserId = (id) => {
-    const sql = "SELECT id, email, phone FROM user WHERE id=?";
+    const sql = "SELECT * FROM user WHERE user_id=?";
     return Conn.GetOne(sql, [id]);
   };
   getUserbyEmail = (email) => {
     const sql = `SELECT * FROM user WHERE email=?`;
     return Conn.GetOne(sql, [email]);
   };
-  update = (user, id) => {
-    const sql = "UPDATE user SET? WHERE id=?";
-    const value = [user, id];
+  updateProfile = (password, phone, id) => {
+    const sql = "UPDATE user SET password=?, phone=? WHERE user_id=?";
+    const value = [password, phone, id];
     return Conn.Excute(sql, value);
   };
-  delete = (user, id) => {
-    const sql = "DELETE FROM user WHERE id=?";
-    const value = [user, id];
+  delete = (id) => {
+    const sql = "DELETE FROM user WHERE user_id=?";
+    const value = [id];
     return Conn.Excute(sql, value);
   };
 }
