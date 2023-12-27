@@ -46,7 +46,8 @@ module.exports = {
     update: async (req, res) => {
         const user_id = req.params.user_id;
         const role = req.body.role;
-        return await user.update(role, user_id);
+        await user.updateRole(role, user_id);
+        return res.status(200).json({ message: 'Cập nhập thành công!'})
     },
 
     updateProfile: async (req, res) => {
