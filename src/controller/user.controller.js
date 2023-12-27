@@ -13,6 +13,12 @@ module.exports = {
         const data = await user.getUserId(user_id);
         return res.send(data);
     },
+
+    getByEmail: async (req, res) => {
+        const email = req.params.email;
+        const data = await user.findByEmail(email);
+        return res.send(data);
+    },
     
     create: async (req, res) => {
         const displayName = req.body.displayName;
@@ -40,18 +46,14 @@ module.exports = {
     update: async (req, res) => {
         const user_id = req.params.user_id;
         const role = req.body.role;
-
-        user = await user.update(role, user_id);
-
-        return user;
+        return await user.update(role, user_id);
     },
 
     updateProfile: async (req, res) => {
         const user_id = req.params.user_id;
         const password = req.body.password;
         const phone = req.body.phone;
-        
-        user = await user.updateProfile(password, phone, user_id);
+        await user.updateProfile(password, phone, user_id);
 
         return res.status(200).json({ message: 'Đã cập nhật thông tin thành công!'})
     },
