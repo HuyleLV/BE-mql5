@@ -33,6 +33,7 @@ module.exports = {
     },
     
     create: async (req, res) => {
+       try {
         const displayName = req.body.displayName;
         const email = req.body.email;
         const password = req.body.password;
@@ -42,16 +43,15 @@ module.exports = {
         const create_at = formatDate(new Date());
         const create_by = "huy";
 
-        const user1 = await user.findByEmail(email);
+        const findUser = await user.findByEmail(email);
+        if(findUser?.length !== 0)  return res.status(400).json({ message: 'Email đã tồn tại!'})
         const newUser = {displayName, email, password, photos, phone, role, create_at, create_by}
-        if (user1 && user1?.length === 0) {
-            console.log(234);
-            await user.createByAdmin(newUser);
-            return res.status(200).json({ message: 'Đã tạo tài khoản thành công!'})
-        } else {
-            console.log(123);
-          return res.status(500).json({ message: 'Email đã tồn tại!'})
-        }
+        
+        await user.createByAdmin(newUser);
+        return res.status(200).json({ message: 'Đã tạo tài khoản thành công!'})
+       } catch (e) {
+        return res.status(500).json({ message: 'Error server!'})
+       }
 
     },
     
