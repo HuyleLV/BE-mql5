@@ -5,6 +5,7 @@ const Transfer = (transfer) => {
     this.transfer_content = transfer.transfer_content;
     this.transfer_price = transfer.transfer_price;
     this.transfer_status = transfer.transfer_status;
+    this.transfer_image = transfer.transfer_image;
     this.product_id = transfer.product_id;
     this.create_at = transfer.create_at;
     this.create_by = transfer.create_by;
@@ -13,6 +14,7 @@ const Transfer = (transfer) => {
 Transfer.getAll = (callback) => {
     const sqlString = `SELECT * FROM transfer 
                     INNER JOIN user ON user.user_id = transfer.create_by
+                    INNER JOIN product ON product.product_id = transfer.product_id
                     ORDER BY transfer_id DESC`;
     db.query(sqlString, (err, result) => {
       if (err) {
@@ -25,7 +27,9 @@ Transfer.getAll = (callback) => {
 Transfer.getById = (transfer_id, callback) => {
   const sqlString = `SELECT * FROM transfer 
                     INNER JOIN user ON user.user_id = transfer.create_by
-                    WHERE transfer.transfer_id =?`;
+                    INNER JOIN product ON product.product_id = transfer.product_id
+                    WHERE transfer.transfer_id =?
+                    ORDER BY transfer_id DESC`;
   db.query(sqlString, transfer_id, (err, result) => {
     if (err) {
       return callback(err);
@@ -34,10 +38,23 @@ Transfer.getById = (transfer_id, callback) => {
   });
 }
 
-Transfer.create = (transfer_content, transfer_price, transfer_status, product_id, create_at, create_by, callback) => {
-  const sqlString = `INSERT INTO transfer(transfer_content, transfer_price, transfer_status, product_id, create_at, create_by) 
-                      VALUES (?,?,?,?,?,?)`;
-  db.query(sqlString, [transfer_content, transfer_price, transfer_status, product_id, create_at, create_by], (err, result) => {
+Transfer.getByIdUser = (user_id, callback) => {
+  const sqlString = `SELECT * FROM transfer 
+                    INNER JOIN user ON user.user_id = transfer.create_by
+                    WHERE user.user_id =?
+                    ORDER BY transfer_id DESC`;
+  db.query(sqlString, user_id, (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+      callback(result);
+  });
+}
+
+Transfer.create = (transfer_content, transfer_price, transfer_status, transfer_image, product_id, create_at, create_by, callback) => {
+  const sqlString = `INSERT INTO transfer(transfer_content, transfer_price, transfer_status, transfer_image, product_id, create_at, create_by) 
+                      VALUES (?,?,?,?,?,?,?)`;
+  db.query(sqlString, [transfer_content, transfer_price, transfer_status, transfer_image, product_id, create_at, create_by], (err, result) => {
     if (err) {
       return callback(err);
     }

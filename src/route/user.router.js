@@ -9,4 +9,6 @@ module.exports = function (router) {
   router.post("/user/update/:user_id", userController.update);
   router.post("/user/updateProfile/:user_id", userController.updateProfile);
   router.delete("/user/delete/:user_id", userController.delete);
+
+  router.post("/admin/login", userController.loginAdmin);
 };

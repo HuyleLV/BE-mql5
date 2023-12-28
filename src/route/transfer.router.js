@@ -3,6 +3,7 @@ module.exports = function (router) {
     
     router.get("/transfer/getAll", transferController.getAll);
     router.get("/transfer/getById/:transfer_id", transferController.getById);
+    router.get("/transfer/getByIdUser/:user_id", transferController.getByIdUser);
     router.post("/transfer/create", transferController.create);
     router.post("/transfer/updateStatus/:transfer_id", transferController.updateStatus);
     router.delete("/transfer/delete/:transfer_id", transferController.delete);
