@@ -31,6 +31,11 @@ class User {
     const value = [password, phone, id];
     return Conn.Excute(sql, value);
   };
+  updatePassword = (password, email) => {
+    const sql = "UPDATE user SET password=? WHERE email=?";
+    const value = [password, email];
+    return Conn.Excute(sql, value);
+  };
   updateRole = (role, id) => {
     const sql = "UPDATE user SET role=? WHERE user_id=?";
     const value = [role, id];
