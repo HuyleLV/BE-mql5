@@ -11,7 +11,9 @@ const categoryChild = (categorychild) => {
 };
 
 categoryChild.getAll = (callback) => {
-    const sqlString = `SELECT * FROM categorychild ORDER BY categoryChild_id DESC`;
+    const sqlString = `SELECT * FROM categorychild 
+      INNER JOIN category ON category.category_id = categoryChild.category_id
+      ORDER BY categoryChild.categoryChild_id DESC`;
     db.query(sqlString, (err, result) => {
       if (err) {
         return callback(err);
