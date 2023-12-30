@@ -24,10 +24,58 @@ Product.getAll = (callback) => {
     });
 }
 
+Product.getAllMarket = (callback) => {
+  
+  const sqlString = `SELECT * FROM category ORDER BY category_id DESC`;
+  db.query(sqlString, (err, result) => {
+    if (err) {
+      callback(err);
+    } else {
+      const promises = result.map((category) => {
+        return new Promise((resolveProduct, rejectChild) => {
+          const sqlStringProduct = `SELECT product.*
+            FROM categorychild 
+            INNER JOIN category ON  category.category_id = categoryChild.category_id
+            INNER JOIN product ON product.categoryChild_id = categoryChild.categoryChild_id
+            WHERE category.category_id = ?`;
+          db.query(sqlStringProduct, category.category_id, (err1, result1) => {
+            if (err1) {
+              rejectChild(err1);
+            } else {
+              category.product = result1;
+              resolveProduct();
+            }
+          });
+        });
+      });
+
+      Promise.all(promises)
+          .then(() => {
+            callback(result);
+          })
+          .catch((error) => {
+            callback(error);
+          });
+    }
+  });
+
+  // const sqlString = `SELECT product.*
+  //   FROM categorychild 
+  //   INNER JOIN category ON  category.category_id = categoryChild.category_id
+  //   INNER JOIN product ON product.categoryChild_id = categoryChild.categoryChild_id
+  //   WHERE category.category_id = ?`;
+  // db.query(sqlString, category_id, (err, result) => {
+  //   if (err) {
+  //     return callback(err);
+  //   }
+  //     callback(result);
+  // });
+}
+
 Product.getById = (product_id, callback) => {
   const sqlString = `SELECT * FROM product 
-  INNER JOIN categorychild ON categorychild.categoryChild_id = product.categoryChild_id
-  WHERE product.product_id = ?`;
+    INNER JOIN categorychild ON categorychild.categoryChild_id = product.categoryChild_id
+    WHERE product.product_id = ?`;
   db.query(sqlString, product_id, (err, result) => {
     if (err) {
       return callback(err);

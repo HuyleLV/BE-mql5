@@ -9,6 +9,12 @@ module.exports = {
     });
   },
 
+  getAllMarket: (req, res) => {
+    Product.getAllMarket((result) => {
+      res.send(result);
+    });
+  },
+
   getById: (req, res) => {
     const product_id = req.params.product_id;
     Product.getById(product_id, (result) => {
