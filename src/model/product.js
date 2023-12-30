@@ -15,7 +15,9 @@ const Product = (product) => {
 };
 
 Product.getAll = (callback) => {
-    const sqlString = `SELECT * FROM product ORDER BY product_id DESC`;
+    const sqlString = `SELECT * FROM product 
+    INNER JOIN user ON user.user_id = product.create_by
+    ORDER BY product_id DESC`;
     db.query(sqlString, (err, result) => {
       if (err) {
         return callback(err);
@@ -35,7 +37,7 @@ Product.getAllMarket = (callback) => {
         return new Promise((resolveProduct, rejectChild) => {
           const sqlStringProduct = `SELECT product.*
             FROM categorychild 
-            INNER JOIN category ON  category.category_id = categoryChild.category_id
+            INNER JOIN category ON category.category_id = categoryChild.category_id
             INNER JOIN product ON product.categoryChild_id = categoryChild.categoryChild_id
             WHERE category.category_id = ?`;
           db.query(sqlStringProduct, category.category_id, (err1, result1) => {

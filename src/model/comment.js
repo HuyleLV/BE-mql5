@@ -12,6 +12,7 @@ const Comment = (comment) => {
 Comment.getAll = (callback) => {
     const sqlString = `SELECT * FROM comment 
                     INNER JOIN user ON user.user_id = comment.create_by
+                    INNER JOIN product ON product.product_id = comment.product_id
                     ORDER BY comment_id DESC`;
     db.query(sqlString, (err, result) => {
       if (err) {

@@ -9,6 +9,12 @@ module.exports = {
         });
     },
 
+    getAllAdmin:(req, res) => {
+        Category.getAllAdmin((result) => {  
+            res.send(result);
+        });
+    },
+
     getById:(req, res) => {
         const category_id = req.params.category_id;
         Category.getById(category_id, (result) => {

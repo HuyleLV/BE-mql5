@@ -13,6 +13,7 @@ const categoryChild = (categorychild) => {
 categoryChild.getAll = (callback) => {
     const sqlString = `SELECT * FROM categorychild 
       INNER JOIN category ON category.category_id = categoryChild.category_id
+      INNER JOIN user ON user.user_id = categoryChild.create_by
       ORDER BY categoryChild.categoryChild_id DESC`;
     db.query(sqlString, (err, result) => {
       if (err) {

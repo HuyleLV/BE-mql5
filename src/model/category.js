@@ -40,6 +40,18 @@ Category.getAll = (callback) => {
   });
 }
 
+Category.getAllAdmin = (callback) => {
+  const sqlString = `SELECT * FROM category 
+    INNER JOIN user ON user.user_id = category.create_by
+    ORDER BY category_id DESC`;
+  db.query(sqlString, (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+      callback(result);
+  });
+}
+
 Category.getById = (category_id, callback) => {
   const sqlString = `SELECT * FROM category WHERE category_id =?`;
   db.query(sqlString, category_id, (err, result) => {
