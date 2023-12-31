@@ -3,7 +3,9 @@ const formatDate = require("../common/formatDate");
 module.exports = {
 
     getAll:(req, res) => {
-        transfer.getAll((result) => {
+        const page = req.query.page;
+        const pageSize = req.query.pageSize;
+        transfer.getAll(page, pageSize, (result) => {
             res.send(result);
         });
     },

@@ -1,4 +1,6 @@
 const db = require("../common/connect");
+const util = require('node:util');
+const query = util.promisify(db.query).bind(db);
 
 const Transfer = (transfer) => {
     this.transfer_id = transfer.transfer_id;
@@ -11,16 +13,29 @@ const Transfer = (transfer) => {
     this.create_by = transfer.create_by;
 };
 
-Transfer.getAll = (callback) => {
+Transfer.getAll = async (page, pageSize, callback) => {
+
+  let _page = page ? page : 1;
+  let _limit = Number(pageSize);
+  let _start = (_page - 1) * _limit;
+
+  let rowData = await query("SELECT COUNT(*) as total FROM transfer");
+  let totalRow = rowData[0].total;
+  let totalPage = Math.ceil(totalRow/_limit);
     const sqlString = `SELECT * FROM transfer 
                     INNER JOIN user ON user.user_id = transfer.create_by
                     INNER JOIN product ON product.product_id = transfer.product_id
-                    ORDER BY transfer_id DESC`;
-    db.query(sqlString, (err, result) => {
+                    ORDER BY transfer_id DESC LIMIT ?,?`;
+    db.query(sqlString, [_start, _limit], (err, result) => {
       if (err) {
         return callback(err);
       }
-        callback(result);
+      const value= {
+        data: result,
+        total: totalRow,
+        totalPage: totalPage
+      }
+      callback(value);
     });
 }
 

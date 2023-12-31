@@ -1,4 +1,6 @@
 const db = require("../common/connect");
+const util = require('node:util');
+const query = util.promisify(db.query).bind(db);
 
 const Comment = (comment) => {
     this.comment_id = comment.comment_id;
@@ -9,17 +11,31 @@ const Comment = (comment) => {
     this.created_by = comment.created_by;
 };
 
-Comment.getAll = (callback) => {
-    const sqlString = `SELECT * FROM comment 
-                    INNER JOIN user ON user.user_id = comment.create_by
-                    INNER JOIN product ON product.product_id = comment.product_id
-                    ORDER BY comment_id DESC`;
-    db.query(sqlString, (err, result) => {
-      if (err) {
-        return callback(err);
+Comment.getAll = async (page, pageSize, callback) => {
+
+  let _page = page ? page : 1;
+  let _limit = Number(pageSize);
+  let _start = (_page - 1) * _limit;
+
+  let rowData = await query("SELECT COUNT(*) as total FROM comment");
+  let totalRow = rowData[0].total;
+  let totalPage = Math.ceil(totalRow/_limit);
+
+  const sqlString = `SELECT * FROM comment 
+                  INNER JOIN user ON user.user_id = comment.create_by
+                  INNER JOIN product ON product.product_id = comment.product_id
+                  ORDER BY comment_id DESC LIMIT ?,?`;
+  db.query(sqlString, [_start, _limit], (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+      const value= {
+        data: result,
+        total: totalRow,
+        totalPage: totalPage
       }
-        callback(result);
-    });
+      callback(value);
+  });
 }
 
 Comment.getById = (product_id, callback) => {
