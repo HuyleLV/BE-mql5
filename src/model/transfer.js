@@ -44,7 +44,7 @@ Transfer.getById = (transfer_id, callback) => {
                     INNER JOIN user ON user.user_id = transfer.create_by
                     INNER JOIN product ON product.product_id = transfer.product_id
                     WHERE transfer.transfer_id =?
-                    ORDER BY transfer_id DESC`;
+                    ORDER BY transfer.transfer_id DESC`;
   db.query(sqlString, transfer_id, (err, result) => {
     if (err) {
       return callback(err);
@@ -53,16 +53,30 @@ Transfer.getById = (transfer_id, callback) => {
   });
 }
 
-Transfer.getByIdUser = (user_id, callback) => {
+Transfer.getByIdUser = async (user_id, page, pageSize, callback) => {
+
+  let _page = page ? page : 1;
+  let _limit = Number(pageSize);
+  let _start = (_page - 1) * _limit;
+
+  let rowData = await query(`SELECT COUNT(*) as total FROM transfer WHERE transfer.create_by =${user_id}`);
+  let totalRow = rowData[0].total;
+  let totalPage = Math.ceil(totalRow/_limit);
   const sqlString = `SELECT * FROM transfer 
                     INNER JOIN user ON user.user_id = transfer.create_by
+                    INNER JOIN product ON product.product_id = transfer.product_id
                     WHERE user.user_id =?
-                    ORDER BY transfer_id DESC`;
-  db.query(sqlString, user_id, (err, result) => {
+                    ORDER BY transfer.transfer_id DESC LIMIT ?,?`;
+  db.query(sqlString, [user_id, _start, _limit], (err, result) => {
     if (err) {
       return callback(err);
     }
-      callback(result);
+    const value= {
+      data: result,
+      total: totalRow,
+      totalPage: totalPage
+    }
+    callback(value);
   });
 }
 

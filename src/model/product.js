@@ -1,4 +1,6 @@
 const db = require("../common/connect");
+const util = require('node:util');
+const query = util.promisify(db.query).bind(db);
 
 const Product = (product) => {
     this.product_id = product.product_id;
@@ -14,16 +16,30 @@ const Product = (product) => {
     this.create_by = product.create_by;
 };
 
-Product.getAll = (callback) => {
-    const sqlString = `SELECT * FROM product 
+Product.getAll = async (page, pageSize, callback) => {
+
+  let _page = page ? page : 1;
+  let _limit = Number(pageSize);
+  let _start = (_page - 1) * _limit;
+
+  let rowData = await query("SELECT COUNT(*) as total FROM product");
+  let totalRow = rowData[0].total;
+  let totalPage = Math.ceil(totalRow/_limit);
+
+  const sqlString = `SELECT * FROM product 
     INNER JOIN user ON user.user_id = product.create_by
-    ORDER BY product_id DESC`;
-    db.query(sqlString, (err, result) => {
-      if (err) {
-        return callback(err);
-      }
-        callback(result);
-    });
+    ORDER BY product_id DESC LIMIT ?,?`;
+  db.query(sqlString, [_start, _limit], (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+    const value= {
+      data: result,
+      total: totalRow,
+      totalPage: totalPage
+    }
+    callback(value);
+  });
 }
 
 Product.getAllMarket = (callback) => {
@@ -39,7 +55,9 @@ Product.getAllMarket = (callback) => {
             FROM categorychild 
             INNER JOIN category ON category.category_id = categoryChild.category_id
             INNER JOIN product ON product.categoryChild_id = categoryChild.categoryChild_id
-            WHERE category.category_id = ?`;
+            WHERE category.category_id = ? 
+            ORDER BY product.product_id DESC
+            LIMIT 12`;
           db.query(sqlStringProduct, category.category_id, (err1, result1) => {
             if (err1) {
               rejectChild(err1);

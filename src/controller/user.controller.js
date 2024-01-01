@@ -1,11 +1,32 @@
+const db = require("../common/connect");
 const formatDate = require("../common/formatDate");
 const user = require("../model/user");
+const util = require('node:util');
+const query = util.promisify(db.query).bind(db);
 
 module.exports = {
 
     getAll: async (req, res) => {
-        const result = await user.findAll();
-        return res.send(result);
+        const page = req.query.page;
+        const pageSize = req.query.pageSize;
+
+        let _page = page ? page : 1;
+        let _limit = Number(pageSize);
+        let _start = (_page - 1) * _limit;
+      
+        let rowData = await query("SELECT COUNT(*) as total FROM user");
+        let totalRow = rowData[0].total;
+        let totalPage = Math.ceil(totalRow/_limit);
+
+        const result = await user.findAll(_start, _limit);
+        
+        const value= {
+            data: result,
+            total: totalRow,
+            totalPage: totalPage
+        }
+
+        return res.status(200).send(value);
     },
 
     getById: async (req, res) => {

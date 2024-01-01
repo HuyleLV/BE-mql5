@@ -5,7 +5,6 @@ module.exports = {
     getAll:(req, res) => {
         const page = req.query.page;
         const pageSize = req.query.pageSize;
-        console.log(page);
         comment.getAll(page, pageSize, (result) => {
             res.send(result);
         });

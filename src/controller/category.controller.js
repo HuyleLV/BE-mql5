@@ -10,7 +10,18 @@ module.exports = {
     },
 
     getAllAdmin:(req, res) => {
-        Category.getAllAdmin((result) => {  
+        const page = req.query.page;
+        const pageSize = req.query.pageSize;
+        Category.getAllAdmin(page, pageSize, (result) => {  
+            res.send(result);
+        });
+    },
+
+    getProductById:(req, res) => {
+        const category_id = req.params.category_id;
+        const page = req.query.page;
+        const pageSize = req.query.pageSize;
+        Category.getProductById(category_id, page, pageSize, (result) => {
             res.send(result);
         });
     },

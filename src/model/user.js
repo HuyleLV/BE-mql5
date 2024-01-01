@@ -1,8 +1,8 @@
 const Conn = require("../common/connDefauld");
 class User {
-  findAll = () => {
-    const sql = "SELECT * FROM user ORDER BY user_id DESC";
-    return Conn.GetList(sql, []);
+  findAll = (_start, _limit) => {
+    const sql = "SELECT * FROM user ORDER BY user_id DESC LIMIT ?,?";
+    return Conn.GetList(sql, [_start, _limit]);
   };
   findByEmail = (email) => {
     const sql = "SELECT * FROM user WHERE email=?";

@@ -1,4 +1,6 @@
 const db = require("../common/connect");
+const util = require('node:util');
+const query = util.promisify(db.query).bind(db);
 
 const categoryChild = (categorychild) => {
     this.categoryChild_id = categorychild.categoryChild_id;
@@ -10,17 +12,31 @@ const categoryChild = (categorychild) => {
     this.created_by = categorychild.created_by;
 };
 
-categoryChild.getAll = (callback) => {
-    const sqlString = `SELECT * FROM categorychild 
-      INNER JOIN category ON category.category_id = categoryChild.category_id
-      INNER JOIN user ON user.user_id = categoryChild.create_by
-      ORDER BY categoryChild.categoryChild_id DESC`;
-    db.query(sqlString, (err, result) => {
-      if (err) {
-        return callback(err);
-      }
-        callback(result);
-    });
+categoryChild.getAll = async (page, pageSize, callback) => {
+  
+  let _page = page ? page : 1;
+  let _limit = Number(pageSize);
+  let _start = (_page - 1) * _limit;
+
+  let rowData = await query("SELECT COUNT(*) as total FROM categorychild");
+  let totalRow = rowData[0].total;
+  let totalPage = Math.ceil(totalRow/_limit);
+
+  const sqlString = `SELECT * FROM categorychild 
+    INNER JOIN category ON category.category_id = categoryChild.category_id
+    INNER JOIN user ON user.user_id = categoryChild.create_by
+    ORDER BY categoryChild.categoryChild_id DESC`;
+  db.query(sqlString, [_start, _limit], (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+    const value= {
+      data: result,
+      total: totalRow,
+      totalPage: totalPage
+    }
+    callback(value);
+  });
 }
 
 categoryChild.getById = (categoryChild_id, callback) => {

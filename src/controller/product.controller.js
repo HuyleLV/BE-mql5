@@ -4,7 +4,9 @@ const fs = require("fs-extra");
 
 module.exports = {
   getAll: (req, res) => {
-    Product.getAll((result) => {
+    const page = req.query.page;
+    const pageSize = req.query.pageSize;
+    Product.getAll(page, pageSize, (result) => {
       res.send(result);
     });
   },

@@ -19,7 +19,9 @@ module.exports = {
 
     getByIdUser:(req, res) => {
         const user_id = req.params.user_id;
-        transfer.getByIdUser(user_id, (result) => {
+        const page = req.query.page;
+        const pageSize = req.query.pageSize;
+        transfer.getByIdUser(user_id, page, pageSize, (result) => {
             res.send(result);
         });
     },
