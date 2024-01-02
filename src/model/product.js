@@ -53,8 +53,8 @@ Product.getAllMarket = (callback) => {
         return new Promise((resolveProduct, rejectChild) => {
           const sqlStringProduct = `SELECT product.*
             FROM categorychild 
-            INNER JOIN category ON category.category_id = categoryChild.category_id
-            INNER JOIN product ON product.categoryChild_id = categoryChild.categoryChild_id
+            INNER JOIN category ON category.category_id = categorychild.category_id
+            INNER JOIN product ON product.categoryChild_id = categorychild.categoryChild_id
             WHERE category.category_id = ? 
             ORDER BY product.product_id DESC
             LIMIT 12`;
