@@ -78,18 +78,6 @@ Product.getAllMarket = (callback) => {
           });
     }
   });
-
-  // const sqlString = `SELECT product.*
-  //   FROM categorychild 
-  //   INNER JOIN category ON  category.category_id = categoryChild.category_id
-  //   INNER JOIN product ON product.categoryChild_id = categoryChild.categoryChild_id
-  //   WHERE category.category_id = ?`;
-  // db.query(sqlString, category_id, (err, result) => {
-  //   if (err) {
-  //     return callback(err);
-  //   }
-  //     callback(result);
-  // });
 }
 
 Product.getById = (product_id, callback) => {
