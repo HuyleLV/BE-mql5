@@ -41,6 +41,18 @@ module.exports = {
         return res.send(data);
     },
 
+    loginUser: async (req, res) => {
+        const email = req.body.email;
+        const password = req.body.password;
+        const data = await user.findByEmail(email);
+        
+        if(password === data[0]?.password && data[0]?.role === 1){
+            return res.status(200).json(data);
+        } else {
+            return res.status(500).json({ message: 'Tài khoản hoặc mật khẩu không đúng!'});
+        }
+    },
+
     loginAdmin: async (req, res) => {
         const email = req.body.email;
         const password = req.body.password;
