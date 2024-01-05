@@ -23,9 +23,9 @@ categoryChild.getAll = async (page, pageSize, callback) => {
   let totalPage = Math.ceil(totalRow/_limit);
 
   const sqlString = `SELECT * FROM categorychild 
-    INNER JOIN category ON category.category_id = categoryChild.category_id
-    INNER JOIN user ON user.user_id = categoryChild.create_by
-    ORDER BY categoryChild.categoryChild_id DESC`;
+    INNER JOIN category ON category.category_id = categorychild.category_id
+    INNER JOIN user ON user.user_id = categorychild.create_by
+    ORDER BY categorychild.categoryChild_id DESC`;
   db.query(sqlString, [_start, _limit], (err, result) => {
     if (err) {
       return callback(err);

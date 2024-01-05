@@ -68,6 +68,41 @@ Category.getAllAdmin = async (page, pageSize, callback) => {
   });
 }
 
+Category.getByProduct = async (category_id, page, pageSize, callback) => {
+
+  let _page = page ? page : 1;
+  let _limit = Number(pageSize);
+  let _start = (_page - 1) * _limit;
+
+  let rowData = await query(`SELECT COUNT(*) as total
+    FROM categorychild 
+    INNER JOIN category ON category.category_id = categoryChild.category_id
+    INNER JOIN product ON product.categoryChild_id = categoryChild.categoryChild_id
+    WHERE category.category_id = ${category_id}`);
+
+  let totalRow = rowData[0].total;
+  let totalPage = Math.ceil(totalRow/_limit);
+
+  const sqlString = `SELECT product.*, categorychild.*
+    FROM categorychild 
+    INNER JOIN category ON category.category_id = categorychild.category_id
+    INNER JOIN product ON product.categoryChild_id = categorychild.categoryChild_id
+    WHERE category.category_id = ? 
+    ORDER BY product.product_id DESC
+    LIMIT ?,?`;
+  db.query(sqlString, [category_id, _start, _limit], (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+    const value= {
+      data: result,
+      total: totalRow,
+      totalPage: totalPage
+    }
+    callback(value);
+  });
+}
+
 Category.getProductById = async (category_id, page, pageSize, callback) => {
 
   let _page = page ? page : 1;

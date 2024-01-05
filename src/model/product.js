@@ -83,6 +83,7 @@ Product.getAllMarket = (callback) => {
 Product.getById = (product_id, callback) => {
   const sqlString = `SELECT * FROM product 
     INNER JOIN categorychild ON categorychild.categoryChild_id = product.categoryChild_id
+    INNER JOIN user ON user.user_id = product.create_by
     WHERE product.product_id = ?`;
   db.query(sqlString, product_id, (err, result) => {
     if (err) {

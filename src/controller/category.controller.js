@@ -26,6 +26,15 @@ module.exports = {
         });
     },
 
+    getByProduct:(req, res) => {
+        const category_id = req.params.category_id;
+        const page = req.query.page;
+        const pageSize = req.query.pageSize;
+        Category.getByProduct(category_id, page, pageSize, (result) => {
+            res.send(result);
+        });
+    },
+
     getById:(req, res) => {
         const category_id = req.params.category_id;
         Category.getById(category_id, (result) => {

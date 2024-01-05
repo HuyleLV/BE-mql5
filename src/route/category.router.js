@@ -3,6 +3,7 @@ module.exports = function (router) {
     
     router.get("/category/getAll", categoryController.getAll);
     router.get("/category/getAllAdmin", categoryController.getAllAdmin);
+    router.get("/category/getByProduct/:category_id", categoryController.getByProduct);
     router.get("/category/getById/:category_id", categoryController.getById);
     router.get("/category/getProductById/:category_id", categoryController.getProductById);
     router.post("/category/create", categoryController.create);
