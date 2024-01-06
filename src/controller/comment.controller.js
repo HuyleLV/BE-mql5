@@ -12,7 +12,9 @@ module.exports = {
 
     getById:(req, res) => {
         const product_id = req.params.product_id;
-        comment.getById(product_id, (result) => {
+        const page = req.query.page;
+        const pageSize = req.query.pageSize;
+        comment.getById(product_id, page, pageSize, (result) => {
             res.send(result);
         });
     },

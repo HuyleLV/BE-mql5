@@ -51,7 +51,7 @@ Product.getAllMarket = (callback) => {
     } else {
       const promises = result.map((category) => {
         return new Promise((resolveProduct, rejectChild) => {
-          const sqlStringProduct = `SELECT product.*
+          const sqlStringProduct = `SELECT product.*, categorychild.*, (SELECT ROUND(AVG(comment_star)) FROM comment WHERE product_id = product.product_id) AS average
             FROM categorychild 
             INNER JOIN category ON category.category_id = categorychild.category_id
             INNER JOIN product ON product.categoryChild_id = categorychild.categoryChild_id
@@ -81,10 +81,13 @@ Product.getAllMarket = (callback) => {
 }
 
 Product.getById = (product_id, callback) => {
-  const sqlString = `SELECT * FROM product 
+  const sqlString = `SELECT product.*, category.*, categorychild.*, user.*, product.create_at, product.create_by,
+  (SELECT ROUND(AVG(comment_star)) FROM comment WHERE product_id = product.product_id) AS average
+  FROM product 
     INNER JOIN categorychild ON categorychild.categoryChild_id = product.categoryChild_id
+    INNER JOIN category ON category.category_id = categorychild.category_id
     INNER JOIN user ON user.user_id = product.create_by
-    WHERE product.product_id = ?`;
+  WHERE product.product_id = ?`;
   db.query(sqlString, product_id, (err, result) => {
     if (err) {
       return callback(err);

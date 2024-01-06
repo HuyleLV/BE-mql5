@@ -97,9 +97,10 @@ module.exports = {
 
     updateProfile: async (req, res) => {
         const user_id = req.params.user_id;
-        const password = req.body.password;
+        const password = req.body.passwordNew;
         const phone = req.body.phone;
-        await user.updateProfile(password, phone, user_id);
+        const photos = req.body.photos;
+        await user.updateProfile(password, photos, phone, user_id);
 
         return res.status(200).json({ message: 'Đã cập nhật thông tin thành công!'})
     },

@@ -76,14 +76,14 @@ Category.getByProduct = async (category_id, page, pageSize, callback) => {
 
   let rowData = await query(`SELECT COUNT(*) as total
     FROM categorychild 
-    INNER JOIN category ON category.category_id = categoryChild.category_id
-    INNER JOIN product ON product.categoryChild_id = categoryChild.categoryChild_id
+    INNER JOIN category ON category.category_id = categorychild.category_id
+    INNER JOIN product ON product.categoryChild_id = categorychild.categoryChild_id
     WHERE category.category_id = ${category_id}`);
 
   let totalRow = rowData[0].total;
   let totalPage = Math.ceil(totalRow/_limit);
 
-  const sqlString = `SELECT product.*, categorychild.*
+  const sqlString = `SELECT product.*, categorychild.*, (SELECT ROUND(AVG(comment_star)) FROM comment WHERE product_id = product.product_id) AS average
     FROM categorychild 
     INNER JOIN category ON category.category_id = categorychild.category_id
     INNER JOIN product ON product.categoryChild_id = categorychild.categoryChild_id
@@ -111,17 +111,17 @@ Category.getProductById = async (category_id, page, pageSize, callback) => {
 
   let rowData = await query(`SELECT COUNT(*) as total, category.category_name
     FROM categorychild 
-    INNER JOIN category ON category.category_id = categoryChild.category_id
-    INNER JOIN product ON product.categoryChild_id = categoryChild.categoryChild_id
+    INNER JOIN category ON category.category_id = categorychild.category_id
+    INNER JOIN product ON product.categoryChild_id = categorychild.categoryChild_id
     WHERE category.category_id = ${category_id}`);
 
   let totalRow = rowData[0].total;
   let totalPage = Math.ceil(totalRow/_limit);
 
-  const sqlString = `SELECT product.*
+  const sqlString = `SELECT product.*, categorychild.*,(SELECT ROUND(AVG(comment_star)) FROM comment WHERE product_id = product.product_id) AS average
     FROM categorychild 
-    INNER JOIN category ON category.category_id = categoryChild.category_id
-    INNER JOIN product ON product.categoryChild_id = categoryChild.categoryChild_id
+    INNER JOIN category ON category.category_id = categorychild.category_id
+    INNER JOIN product ON product.categoryChild_id = categorychild.categoryChild_id
     WHERE category.category_id = ? 
     ORDER BY product.product_id DESC
     LIMIT ?,?`;

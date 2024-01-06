@@ -26,9 +26,9 @@ class User {
     const sql = `SELECT * FROM user WHERE email=?`;
     return Conn.GetOne(sql, [email]);
   };
-  updateProfile = (password, phone, id) => {
-    const sql = "UPDATE user SET password=?, phone=? WHERE user_id=?";
-    const value = [password, phone, id];
+  updateProfile = (password, photos, phone, user_id) => {
+    const sql = "UPDATE user SET password=?, photos=?, phone=? WHERE user_id=?";
+    const value = [password, photos, phone, user_id];
     return Conn.Excute(sql, value);
   };
   updatePassword = (password, email) => {

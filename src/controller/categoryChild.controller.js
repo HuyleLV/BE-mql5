@@ -16,6 +16,16 @@ module.exports = {
             res.send(result);
         });
     },
+
+    getProductById:(req, res) => {
+        const page = req.query.page;
+        const pageSize = req.query.pageSize;
+        const categoryChild_id = req.query.categoryChild_id;
+        const category_id = req.query.category_id;
+        categoryChild.getProductById(page, pageSize, category_id, categoryChild_id, (result) => {
+            res.send(result);
+        });
+    },
     
     create:(req, res) => {
         const categoryChild_name = req.body.categoryChild_name;
