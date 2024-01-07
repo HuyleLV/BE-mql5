@@ -193,6 +193,16 @@ Product.update = (
   });
 }
 
+Product.updateActivation = (product_id, product_activations, callback) => {
+  const sqlString = `UPDATE product SET product_activations=? WHERE product_id=?`;
+  db.query(sqlString, [product_activations, product_id], (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+      callback(result);
+  });
+}
+
 Product.delete = (product_id, callback) => {
   const sqlString = `DELETE FROM product WHERE product_id = ?`;
   db.query(sqlString, product_id, (err, result) => {

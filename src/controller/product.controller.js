@@ -93,6 +93,18 @@ module.exports = {
     });
   },
 
+  updateActivation: (req, res) => {
+    const product_id = req.params.product_id;
+    const product_activations = req.body.product_activations;
+
+    Product.updateActivation(
+      product_id,
+      product_activations, 
+      (result) => {
+        res.send(result);
+    });
+  },
+
   delete:(req, res) => {
       const product_id = req.params.product_id;
       Product.delete(product_id, (result) => {

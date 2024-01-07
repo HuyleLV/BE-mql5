@@ -7,6 +7,7 @@ module.exports = function (router) {
   router.get("/product/getByCategoryChild/:categoryChild_id", productController.getByCategoryChild);
   router.get("/product/getById/:product_id", productController.getById);
   router.post("/product/create", productController.create);
+  router.post("/product/updateActivation/:product_id", productController.updateActivation);
   router.post("/product/update/:product_id", productController.update);
   router.delete("/product/delete/:product_id", productController.delete);
 };
